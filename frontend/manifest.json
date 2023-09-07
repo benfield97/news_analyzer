@@ -1,0 +1,15 @@
+{
+    "name": "Article Analyzer",
+    "version": "1.0.0",
+    "description": "Article Analyzer",
+    "manifest_version": 3,
+    "author": "Ben Field and Justin Beaconsfield",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module",
+        "action_handlers": ["action"]
+    }
+}

@@ -1,0 +1,77 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700&display=swap');
+
+/* color palette https://coolors.co/palette/e63946-f1faee-a8dadc-457b9d-1d3557 */
+:root {
+    --card-border-radius: 7.5px;
+    --card-padding: 5px;
+    --card-margin: 10px;
+    --card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#cards {
+    display: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card {
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    margin: var(--card-margin);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.left {
+    padding-top: 5px;
+    text-align: left;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    border: 3px solid #457B9D;
+    
+}
+
+.odometer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 300px;
+    height: 315px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    background-color: #F1FAEE;
+    user-select: none;
+    overflow-x: hidden;
+}
+
+

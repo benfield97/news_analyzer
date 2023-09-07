@@ -127,11 +127,19 @@ def get_bias_rating(messages):
 
     return biases
 
+def run(url):
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+    article = get_article_text(url)
+    emotive_list = get_emotive_list(article, messages)
+    emotive_rating = get_emotive_rating(messages)
+    political_list = get_political_bias_list(messages)
+    establishment_list = get_establishment_list(messages)
+    bias_ratings = get_bias_rating(messages)
 
-messages = [{"role": "system", "content": "You are a helpful assistant."}]
-article = get_article_text('https://www.vice.com/en/article/bvjnqd/cnn-trump-town-hall')
-emotive_list = get_emotive_list(article, messages)
-emotive_rating = get_emotive_rating(messages)
-political_list = get_political_bias_list(messages)
-establishment_list = get_establishment_list(article, messages)
-bias_ratings = get_bias_rating(messages)
+    return {
+        'emotive_list': emotive_list,
+        'emotive_rating': emotive_rating,
+        'political_list': political_list,
+        'establishment_list': establishment_list,
+        'bias_ratings': bias_ratings
+    }
