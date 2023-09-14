@@ -11,5 +11,6 @@
         "service_worker": "background.js",
         "type": "module",
         "action_handlers": ["action"]
-    }
+    },
+    "permissions": ["tabs", "storage"]
 }

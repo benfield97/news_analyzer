@@ -7,31 +7,32 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </head>
 <body>
     <div class="container">
         <h2 class="text-center">Article AI</h2>
         <button id="analyzeButton" class="btn btn-primary">Analyze Sentiment</button>
+        <div id="loading" class="loader"></div>
 
         <div id="cards">
-            <div class="row card">
+            <div class="row card" id="1">
                 <div class="left">
                     <h4>Political Lean</h4>
                     <p>On a scale from 1 (strongly left-wing) to 10 (strongly right-wing)</p>
                 </div>
-                <div id="positive" class="odometer">0</div>
+                <div id="political_lean" class="odometer">0</div>
             </div>
 
-            <div class="row card">
+            <div class="row card" id="2">
                 <div class="left">
                     <h4>Pro v. Anti Establishment Score</h4>
                     <p>On a scale from 1 (strongly pro-establishment) to 10 (strongly anti-establishment)</p>
                 </div>
-                <div id="negative" class="odometer">0</div>
+                <div id="establishment_score" class="odometer">0</div>
             </div>
 
-            <div class="row card">
+            <div class="row card" id="3">
 
                 <div class="left">
                     <h4>Emotiveness</h4>
@@ -39,7 +40,7 @@
                 </div>
 
 
-                <div id="neutral" class="odometer">0</div>
+                <div id="emotiveness" class="odometer">0</div>
             </div>
         </div>
 
