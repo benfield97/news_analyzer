@@ -12,5 +12,12 @@
         "type": "module",
         "action_handlers": ["action"]
     },
-    "permissions": ["tabs", "storage"]
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript.js"]
+        }
+    ],
+    "permissions": ["scripting","tabs", "storage"],
+    "host_permissions": ["<all_urls>"]
 }
