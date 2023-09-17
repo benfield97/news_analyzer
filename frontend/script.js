@@ -71,50 +71,32 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         const emotivenessCard = document.getElementById('3');
     
         politicalLeanCard.addEventListener('click', () => {
-            if (globalData && globalData.political_list) {
-                console.log('Sending message:', globalData.political_list);
-                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, {texts: globalData.political_list}, function(response) {
-                        if (chrome.runtime.lastError) {
-                            console.error(chrome.runtime.lastError.message);
-                        } else {
-                            console.log('Message sent, response:', response);
-                        }
-                    });
-                });
-            }
+            toggleHighlight(globalData.political_list, 'political');
         });
-    
+
         emotivenessCard.addEventListener('click', () => {
-            if (globalData && globalData.emotive_list) {
-                console.log('Sending message:', globalData.emotive_list);
-                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, {texts: globalData.emotive_list}, function(response) {
-                        if (chrome.runtime.lastError) {
-                            console.error(chrome.runtime.lastError.message);
-                        } else {
-                            console.log('Message sent, response:', response);
-                        }
-                    });
-                });
-            }
+            toggleHighlight(globalData.emotive_list, 'emotive');
         });
-    
+
         establishmentScoreCard.addEventListener('click', () => {
-            if (globalData && globalData.establishment_list) {
-                console.log('Sending message:', globalData.establishment_list);
-                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                    chrome.tabs.sendMessage(tabs[0].id, {texts: globalData.establishment_list}, function(response) {
-                        if (chrome.runtime.lastError) {
-                            console.error(chrome.runtime.lastError.message);
-                        } else {
-                            console.log('Message sent, response:', response);
-                        }
-                    });
-                });
-            }
+            toggleHighlight(globalData.establishment_list, 'establishment');
         });
     };
+
+    function toggleHighlight(list, type) {
+        if (globalData && list) {
+            console.log('Sending message:', list);
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {texts: list, type: type}, function(response) {
+                    if (chrome.runtime.lastError) {
+                        console.error(chrome.runtime.lastError.message);
+                    } else {
+                        console.log('Message sent, response:', response);
+                    }
+                });
+            });
+        }
+    }
 
     // Get the current tab ID
     const tabs = await chrome.tabs.query({active: true, currentWindow: true});
