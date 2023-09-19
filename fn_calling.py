@@ -3,10 +3,20 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
+import re
 
 load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+def format_list(input_string):
+    # Split the string into a list of phrases
+    phrases = input_string.split(',')
+
+    # Remove leading/trailing whitespace, quotation marks and final punctuation
+    cleaned_phrases = [re.sub(r'^["\s]+|["\s]+$|[.,;:!?"]$', '', phrase) for phrase in phrases]
+
+    return cleaned_phrases
 
 def get_article_text(input, format = 'url'):
     # Send a request to the website
@@ -59,37 +69,7 @@ def get_completion(prompt, messages, model=4):
 
     return response['choices'][0]['message']['content']
 
-def get_completion_fn(prompt, messages, model=4):
-    messages.append({"role": "user", "content": prompt})
 
-    function_descriptions = [
-    {
-        "name": "get_term_list",
-        "description": "format the model response as a list of strings",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "terms": {
-                    "type": "string",
-                    "description": "The list of terms to be formatted",
-                },
-            },
-            "required": ["terms"],
-        },
-    }
-]
-
-    response = openai.ChatCompletion.create(
-        model=f"gpt-{model}",
-        messages= messages,
-        functions=function_descriptions,
-        function_call='auto'
-
-    )
-
-    messages.append({"role": "system", "content": response['choices'][0]['message']['content']})
-
-    return response['choices'][0]['message']['content']
 
 def get_emotive_list(article_text, messages):
     prompt = f"""
@@ -101,7 +81,9 @@ def get_emotive_list(article_text, messages):
     Article: '''{article_text}'''
     """
 
-    response = get_completion_fn(prompt, messages)
+    response = get_completion(prompt, messages)
+
+    response = format_list(response)
 
     return response
 
@@ -209,26 +191,41 @@ def get_establishment_bias_rating(messages):
         return int(response)
 
 
+
+article = get_article_text('https://www.foxnews.com/politics/biden-admin-quietly-reverses-trump-era-rule-bans-transporting-fossil-fuels-train')
+
+is_article = article_detection(article)
+
+emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
+emotive_list = get_emotive_list(article, emo_msgs)
+
+
+print(emotive_list)
+
+
 def run(url):
     article = get_article_text(url)
 
     is_article = article_detection(article)
-    if is_article == False:
-        return {'error': 'This is not an article.'}
-    
-    
 
-    # emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
-    # emotive_list = get_emotive_list(article, emo_msgs)
-    # emotive_rating = get_emotive_rating(emo_msgs)
+    emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
+    emotive_list = get_emotive_list(article, emo_msgs)
+    emotive_rating = get_emotive_rating(emo_msgs)
 
-    # pol_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of political bias in articles."}]
-    # political_list = get_political_bias_list(article, pol_msgs)
-    # political_rating = get_political_bias_rating(pol_msgs)
+    pol_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of political bias in articles."}]
+    political_list = get_political_bias_list(article, pol_msgs)
+    political_rating = get_political_bias_rating(pol_msgs)
 
-    # est_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of pro or anti establishment bias in articles."}]
-    # establishment_list = get_establishment_list(article, est_msgs)
-    # establishment_bias_rating = get_establishment_bias_rating(est_msgs)
+    est_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of pro or anti establishment bias in articles."}]
+    establishment_list = get_establishment_list(article, est_msgs)
+    establishment_bias_rating = get_establishment_bias_rating(est_msgs)
 
-
-run('https://www.foxnews.com/politics/biden-admin-quietly-reverses-trump-era-rule-bans-transporting-fossil-fuels-train')
+    return {
+        'is_article': is_article,
+        'emotive_list': emotive_list,
+        'emotive_rating': emotive_rating,
+        'political_list': political_list,
+        'political_rating': political_rating,
+        'establishment_list': establishment_list,
+        'establishment_bias_rating': establishment_bias_rating
+    }

@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             addCardEventListeners();
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             loading.style.display = 'none';
         });
     };
@@ -71,23 +71,23 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         const emotivenessCard = document.getElementById('3');
     
         politicalLeanCard.addEventListener('click', () => {
-            toggleHighlight(globalData.political_list, 'political');
+            toggleHighlight(globalData.political_list, 'political', 'red');
         });
 
         emotivenessCard.addEventListener('click', () => {
-            toggleHighlight(globalData.emotive_list, 'emotive');
+            toggleHighlight(globalData.emotive_list, 'emotive', 'blue');
         });
 
         establishmentScoreCard.addEventListener('click', () => {
-            toggleHighlight(globalData.establishment_list, 'establishment');
+            toggleHighlight(globalData.establishment_list, 'establishment','green');
         });
     };
 
-    function toggleHighlight(list, type) {
+    function toggleHighlight(list, type, color) {
         if (globalData && list) {
             console.log('Sending message:', list);
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {texts: list, type: type}, function(response) {
+                chrome.tabs.sendMessage(tabs[0].id, {texts: list, type: type, color: color}, function(response) {
                     if (chrome.runtime.lastError) {
                         console.error(chrome.runtime.lastError.message);
                     } else {
@@ -127,3 +127,4 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         }
     });
 });
+
