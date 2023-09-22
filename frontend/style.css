@@ -22,6 +22,7 @@
 }
 
 
+
 @import url('https://fonts.googleapis.com/css?family=Righteous');
 
 body {
@@ -97,7 +98,6 @@ h2 {
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     margin: var(--card-margin);
-    box-shadow: var(--card-shadow);
     transition: all 0.3s ease;
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -128,9 +128,12 @@ h2 {
 }
 
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    border: 3px solid #457B9D;
+    box-shadow: 0 0 0 3px #457B9D inset;
     
+}
+
+.card.clicked {
+    box-shadow: 0 0 0 3px #457B9D inset;
 }
 
 .odometer {

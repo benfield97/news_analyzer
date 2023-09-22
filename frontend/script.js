@@ -2,6 +2,7 @@ import { getActiveTabURL } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async (event) => {
     console.log("Script loaded");
+    let areEventListenersAdded = false;
 
     // DOM elements
     const analyze_btn = document.getElementById('analyzeButton');
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            globalData = data;
             // Store the data in chrome.storage.local
             chrome.storage.local.set({[tabId.toString()]: data}, () => {
                 if (chrome.runtime.lastError) {
@@ -52,11 +54,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                     console.log('Data saved');
                 }
             });
-            globalData = data;
             updateUI(data);
-
             // Add event listeners to the card elements
-            addCardEventListeners();
+            //addCardEventListeners();
         })
         .catch((error) => {
             console.log('Error:', error);
@@ -72,15 +72,20 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     
         politicalLeanCard.addEventListener('click', () => {
             toggleHighlight(globalData.political_list, 'political', 'red');
+            politicalLeanCard.classList.toggle('clicked');
         });
 
         emotivenessCard.addEventListener('click', () => {
             toggleHighlight(globalData.emotive_list, 'emotive', 'blue');
+            emotivenessCard.classList.toggle('clicked');
         });
 
         establishmentScoreCard.addEventListener('click', () => {
             toggleHighlight(globalData.establishment_list, 'establishment','green');
+            establishmentScoreCard.classList.toggle('clicked');
         });
+
+        areEventListenersAdded = true;
     };
 
     function toggleHighlight(list, type, color) {
@@ -98,6 +103,15 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         }
     }
 
+    // Check if cards are present and add event listeners
+    const politicalLeanCard = document.getElementById('1');
+    const establishmentScoreCard = document.getElementById('2');
+    const emotivenessCard = document.getElementById('3');
+
+    if (!areEventListenersAdded && politicalLeanCard && establishmentScoreCard && emotivenessCard) {
+        addCardEventListeners();
+    }
+
     // Get the current tab ID
     const tabs = await chrome.tabs.query({active: true, currentWindow: true});
     const tabId = tabs[0].id;
@@ -109,6 +123,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         } else if (result[tabId]) {
             // Data for this tab already exists, use it instead of fetching
             console.log('Data from storage:', result[tabId]);
+            globalData = result[tabId]; // Retrieve the data from storage
             updateUI(result[tabId]);
             analyze_btn.style.display = 'none'; // Hide the "Analyze Sentiment" button
         } else {
@@ -127,4 +142,3 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         }
     });
 });
-

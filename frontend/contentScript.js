@@ -47,10 +47,3 @@ function addMessageListener() {
 
 // Add the message listener when the script loads
 addMessageListener();
-
-// Re-add the message listener when the tab becomes visible
-document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-        addMessageListener();
-    }
-});

@@ -123,6 +123,7 @@ def get_political_bias_list(article_text, messages):
         """
 
     response = get_completion(prompt, messages)
+    response = format_list(response)
 
     return response
 
@@ -163,6 +164,7 @@ def get_establishment_list(article_text, messages):
             """
 
     response = get_completion(prompt, messages)
+    response = format_list(response)
 
     return response
 
@@ -198,9 +200,6 @@ is_article = article_detection(article)
 
 emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
 emotive_list = get_emotive_list(article, emo_msgs)
-
-
-print(emotive_list)
 
 
 def run(url):
