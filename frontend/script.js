@@ -15,15 +15,21 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     // Global data
     let globalData = null;
 
-    // Update UI function
     const updateUI = (data) => {
         loading.style.display = 'none'; // Hide loading icon
-        cards.style.display = 'block'; // Show cards
-
-        // Update odometer values
-        document.getElementById('political_lean').innerText = data.political_rating;
-        document.getElementById('establishment_score').innerText = data.establishment_bias_rating;
-        document.getElementById('emotiveness').innerText = data.emotive_rating;
+    
+        if (data.is_article) {
+            cards.style.display = 'block'; // Show cards
+    
+            // Update odometer values
+            document.getElementById('political_lean').innerText = data.political_rating;
+            document.getElementById('establishment_score').innerText = data.establishment_bias_rating;
+            document.getElementById('emotiveness').innerText = data.emotive_rating;
+        } else {
+            cards.style.display = 'none'; // Hide cards
+            const message = document.getElementById('invalid'); 
+            message.style.display = 'inline-block'; // Show the message
+        }
     };
 
     // Fetch data function

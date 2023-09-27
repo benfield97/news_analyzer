@@ -44,9 +44,15 @@ h2 {
     padding-top: 25px;
 }
 
+#invalid {
+    text-align: center;
+    display: none;
+    font-size: 4vw;
+}
+
 #analyzeButton {
 	position: relative;
-  display: inline-block;
+    display: inline-block;
 	width: 15em;
 	height: 3em;
 	border-top: 1px solid hsla(240, 9%, 6%,1);
