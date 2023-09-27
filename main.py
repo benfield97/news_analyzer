@@ -57,7 +57,7 @@ def article_detection(article_text):
         return False
 
 
-def get_completion(prompt, messages, model=4):
+def get_completion(prompt, messages, model='3.5-turbo'):
     messages.append({"role": "user", "content": prompt})
 
     response = openai.ChatCompletion.create(
@@ -194,37 +194,33 @@ def get_establishment_bias_rating(messages):
 
 
 
-article = get_article_text('https://www.foxnews.com/politics/biden-admin-quietly-reverses-trump-era-rule-bans-transporting-fossil-fuels-train')
-
-is_article = article_detection(article)
-
-emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
-emotive_list = get_emotive_list(article, emo_msgs)
-
 
 def run(url):
     article = get_article_text(url)
 
     is_article = article_detection(article)
 
-    emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
-    emotive_list = get_emotive_list(article, emo_msgs)
-    emotive_rating = get_emotive_rating(emo_msgs)
+    if not is_article:
+        return {'is_article': False}
+    else:
+        emo_msgs = [{"role": "system", "content": "You are an expert on journalism. You specialise in assessing how emotive language is used to position readers"}]
+        emotive_list = get_emotive_list(article, emo_msgs)
+        emotive_rating = get_emotive_rating(emo_msgs)
 
-    pol_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of political bias in articles."}]
-    political_list = get_political_bias_list(article, pol_msgs)
-    political_rating = get_political_bias_rating(pol_msgs)
+        pol_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of political bias in articles."}]
+        political_list = get_political_bias_list(article, pol_msgs)
+        political_rating = get_political_bias_rating(pol_msgs)
 
-    est_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of pro or anti establishment bias in articles."}]
-    establishment_list = get_establishment_list(article, est_msgs)
-    establishment_bias_rating = get_establishment_bias_rating(est_msgs)
+        est_msgs = [{"role": "system", "content": "You are an expert on journalism and politics. You specialise in assessing the presence of pro or anti establishment bias in articles."}]
+        establishment_list = get_establishment_list(article, est_msgs)
+        establishment_bias_rating = get_establishment_bias_rating(est_msgs)
 
-    return {
-        'is_article': is_article,
-        'emotive_list': emotive_list,
-        'emotive_rating': emotive_rating,
-        'political_list': political_list,
-        'political_rating': political_rating,
-        'establishment_list': establishment_list,
-        'establishment_bias_rating': establishment_bias_rating
-    }
+        return {
+            'is_article': True,
+            'emotive_list': emotive_list,
+            'emotive_rating': emotive_rating,
+            'political_list': political_list,
+            'political_rating': political_rating,
+            'establishment_list': establishment_list,
+            'establishment_bias_rating': establishment_bias_rating
+        }

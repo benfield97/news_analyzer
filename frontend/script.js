@@ -147,4 +147,10 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             cards.style.display = 'none';
         }
     });
+
+    document.getElementById('company-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        chrome.tabs.create({url: event.target.href});
+    });
+    
 });
