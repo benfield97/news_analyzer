@@ -11,7 +11,5 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log(`Card ${request.cardId} clicked`);
-});
+
 

@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     // Fetch data function
     const fetchData = async () => {
         analyze_btn.style.display = 'none';
-        loading.style.display = 'block';
+        loading.style.display = 'inline-block';
         let url = await getActiveTabURL();
         console.log("Current tab URL: ", url); // This will log the current tab URL
         let data = {url: url};
