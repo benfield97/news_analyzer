@@ -71,17 +71,17 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         const emotivenessCard = document.getElementById('3');
     
         politicalLeanCard.addEventListener('click', () => {
-            toggleHighlight(globalData.political_list, 'political', 'red');
+            toggleHighlight(globalData.political_list, 'political', '#99FF99');
             politicalLeanCard.classList.toggle('clicked');
         });
 
         emotivenessCard.addEventListener('click', () => {
-            toggleHighlight(globalData.emotive_list, 'emotive', 'blue');
+            toggleHighlight(globalData.emotive_list, 'emotive', '#FFFF00)');
             emotivenessCard.classList.toggle('clicked');
         });
 
         establishmentScoreCard.addEventListener('click', () => {
-            toggleHighlight(globalData.establishment_list, 'establishment','green');
+            toggleHighlight(globalData.establishment_list, 'establishment','#00FFFF');
             establishmentScoreCard.classList.toggle('clicked');
         });
 

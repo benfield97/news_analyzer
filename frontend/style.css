@@ -127,13 +127,29 @@ h2 {
     text-align: left;
 }
 
-.card:hover {
-    box-shadow: 0 0 0 3px #457B9D inset;
-    
+
+.pol.clicked {
+    box-shadow: 0 0 0 3px #99FF99 inset;
 }
 
-.card.clicked {
-    box-shadow: 0 0 0 3px #457B9D inset;
+.est.clicked {
+    box-shadow: 0 0 0 3px #00FFFF inset;
+}
+
+.emo.clicked {
+    box-shadow: 0 0 0 3px #FFFF00 inset;
+}
+
+.pol:hover {
+    box-shadow: 0 0 0 3px #99FF99 inset;
+}
+
+.est:hover {
+    box-shadow: 0 0 0 3px #00FFFF inset;
+}
+
+.emo:hover {
+    box-shadow: 0 0 0 3px #FFFF00 inset;
 }
 
 .odometer {
