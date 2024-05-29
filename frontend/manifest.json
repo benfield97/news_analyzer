@@ -5,19 +5,19 @@
     "manifest_version": 3,
     "author": "Ben Field and Justin Beaconsfield",
     "action": {
-        "default_popup": "popup.html"
+      "default_popup": "popup.html"
     },
     "background": {
-        "service_worker": "background.js",
-        "type": "module",
-        "action_handlers": ["action"]
+      "service_worker": "background.js",
+      "type": "module",
+      "action_handlers": ["action"]
     },
     "content_scripts": [
-        {
-            "matches": ["<all_urls>"],
-            "js": ["mark.min.js","contentScript.js"]
-        }
+      {
+        "matches": ["<all_urls>"],
+        "js": ["mark.min.js", "contentScript.js"]
+      }
     ],
-    "permissions": ["scripting","tabs", "storage"],
+    "permissions": ["scripting", "tabs", "storage", "contextMenus"],
     "host_permissions": ["<all_urls>"]
-}
+  }

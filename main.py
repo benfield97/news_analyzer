@@ -59,7 +59,7 @@ def article_detection(article_text):
         return False
 
 
-def get_completion(prompt, messages, model=4):
+def get_completion(prompt, messages, model='4o'):
     messages.append({"role": "user", "content": prompt})
 
     response = openai.ChatCompletion.create(
