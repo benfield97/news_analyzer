@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
 from dotenv import load_dotenv
+from flask import Flask, jsonify, request
 from flask_cors import CORS
+
 # Import functions from your main.py (make sure it's in the same directory)
 from main import run
 
@@ -15,14 +16,11 @@ def home():
 
 
 @app.route('/analyze', methods=['POST'])
-def analyze_article():
+def analyze_text():
     try:
-        url = request.json.get('url')     
-        # Bundle results
-        result = run(url)
-        
+        text = request.json.get('text')
+        result = run(text)
         return jsonify(result)
-        
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
