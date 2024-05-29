@@ -1,9 +1,10 @@
+import os
+import re
+
 import openai
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-import os
-import re
 
 load_dotenv()
 
@@ -31,7 +32,6 @@ def get_article_text(input, format = 'url'):
 
     # Find article text and combine it into one string
     article_text = ' '.join([p.text for p in soup.find_all('p')])
-
     return article_text
 
 
@@ -49,7 +49,9 @@ def article_detection(article_text):
         Article: ```{article_text}```
         """
 
+    print(article_text)
     response = get_completion(prompt, message)
+    print(response)
 
     if 'True' in response:
         return True
@@ -57,7 +59,7 @@ def article_detection(article_text):
         return False
 
 
-def get_completion(prompt, messages, model='3.5-turbo'):
+def get_completion(prompt, messages, model=4):
     messages.append({"role": "user", "content": prompt})
 
     response = openai.ChatCompletion.create(

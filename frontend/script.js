@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     const analyze_btn = document.getElementById('analyzeButton');
     const cards = document.getElementById('cards');
     const loading = document.getElementById('loading');
+    const message = document.getElementById('invalid'); 
 
     // API endpoint
     const ENDPOINT = 'http://127.0.0.1:5000/analyze';
@@ -26,8 +27,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             document.getElementById('establishment_score').innerText = data.establishment_bias_rating;
             document.getElementById('emotiveness').innerText = data.emotive_rating;
         } else {
-            cards.style.display = 'none'; // Hide cards
-            const message = document.getElementById('invalid'); 
+            cards.style.display = 'none'; // Hide card
             message.style.display = 'inline-block'; // Show the message
         }
     };
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             // The URL of the current tab has changed, show the "Analyze Sentiment" button and hide the cards
             analyze_btn.style.display = 'block';
             cards.style.display = 'none';
+            message.style.display = 'none'; // Show the message
         }
     });
 
