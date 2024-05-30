@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async (event) => {
     console.log("Script loaded");
 
@@ -12,18 +11,12 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
     const updateUI = (data) => {
         loading.style.display = 'none'; // Hide loading icon
-    
-        if (data.is_article) {
-            cards.style.display = 'block'; // Show cards
-    
-            // Update odometer values
-            document.getElementById('political_lean').innerText = data.political_rating;
-            document.getElementById('establishment_score').innerText = data.establishment_bias_rating;
-            document.getElementById('emotiveness').innerText = data.emotive_rating;
-        } else {
-            cards.style.display = 'none'; // Hide card
-            message.style.display = 'inline-block'; // Show the message
-        }
+        cards.style.display = 'block'; // Show cards
+
+        // Update odometer values
+        document.getElementById('political_lean').innerText = data.political_rating;
+        document.getElementById('establishment_score').innerText = data.establishment_bias_rating;
+        document.getElementById('emotiveness').innerText = data.emotive_rating;
     };
 
     // Add event listeners to the card elements

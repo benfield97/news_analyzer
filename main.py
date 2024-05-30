@@ -160,7 +160,6 @@ def run(text):
     establishment_bias_rating = get_establishment_bias_rating(est_msgs)
 
     result = {
-        'is_article': True,
         'emotive_list': emotive_list,
         'emotive_rating': emotive_rating,
         'political_list': political_list,
