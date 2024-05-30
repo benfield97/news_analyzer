@@ -2,8 +2,7 @@ import os
 import re
 
 from dotenv import load_dotenv
-
-from testlite import completion
+from litellm import completion
 
 load_dotenv()
 
@@ -26,7 +25,7 @@ def get_completion(prompt, messages, model='claude-3-opus-20240229'):
     response = completion(model=model, messages=messages)
 
     # Access the generated text from the response object
-    generated_text = response.generate_response()
+    generated_text = response.choices[0].message.content
 
     messages.append({"role": "assistant", "content": generated_text})
 
@@ -174,3 +173,20 @@ def run(text):
         return result
     except Exception as e:
         print(e)
+
+if __name__ == "__main__":
+    # Example article text
+    article_text = """
+    The government's decision to raise taxes has sparked outrage among citizens. The move, which is seen as a blatant attempt to fill the coffers at the expense of hardworking individuals, has been met with fierce opposition from across the political spectrum.
+
+    Critics argue that the tax hike will disproportionately impact the middle class and low-income earners, who are already struggling to make ends meet. They accuse the government of being out of touch with the realities faced by ordinary people and prioritizing the interests of the wealthy elite.
+
+    Supporters of the government, however, claim that the tax increase is necessary to fund vital public services and reduce the growing budget deficit. They argue that the burden should be shared by all citizens and that those with higher incomes should contribute more to the collective good.
+
+    The controversy has led to protests and demonstrations in several major cities, with thousands taking to the streets to voice their discontent. Many are calling for the government to reverse its decision and find alternative ways to address the country's financial challenges.
+
+    As the debate rages on, it remains to be seen whether the government will succumb to public pressure or stand firm in its resolve to implement the tax hike. One thing is certain: the issue has exposed deep divisions within society and raised questions about the fairness and effectiveness of the country's economic policies.
+    """
+
+    # Run the analysis
+    result = run(article_text)
