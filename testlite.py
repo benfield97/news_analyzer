@@ -1,8 +1,10 @@
 import os
 import re
+import time
 
 from dotenv import load_dotenv
 from litellm import completion
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 load_dotenv()
 
@@ -10,6 +12,13 @@ anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
 os.environ["ANTHROPIC_API_KEY"] = anthropic_api_key
 
 def format_list(input_string):
+    # Find the index of the word "START"
+    start_index = input_string.find("START")
+    
+    if start_index != -1:
+        # Extract the substring after "START"
+        input_string = input_string[start_index + len("START"):].strip()
+    
     # Split the string into a list of phrases
     phrases = input_string.split(',')
 
@@ -18,7 +27,7 @@ def format_list(input_string):
 
     return cleaned_phrases
 
-
+@retry(wait=wait_exponential(multiplier=1, min=4, max=10), stop=stop_after_attempt(5))
 def get_completion(prompt, messages, model='claude-3-opus-20240229'):
     messages.append({"role": "user", "content": prompt})
 
@@ -26,6 +35,9 @@ def get_completion(prompt, messages, model='claude-3-opus-20240229'):
 
     # Access the generated text from the response object
     generated_text = response.choices[0].message.content
+
+    # Replace newline characters with a space
+    generated_text = generated_text.replace("\n", " ")
 
     messages.append({"role": "assistant", "content": generated_text})
 
@@ -37,6 +49,8 @@ def get_emotive_list(article_text, messages):
     following article, which is delimited by triple backticks.
 
     Format your response as a list of items separated by commas.
+
+    Begin your response with START
 
     Article: '''{article_text}'''
     """
@@ -76,6 +90,8 @@ def get_political_bias_list(article_text, messages):
         Extract all examples of politically biased phrases used in the article.
 
         Format your response as a list of items separated by commas.
+
+        Begin your response with START
         
         Article: ```{article_text}```
         """
@@ -115,6 +131,8 @@ def get_establishment_list(article_text, messages):
             Extract all examples of politically biased phrases used in the article.
 
             Format your response as a list of items separated by commas.
+
+            Begin your response with START
             
             Article: ```{article_text}```
             """

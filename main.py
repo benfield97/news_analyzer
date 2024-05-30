@@ -26,7 +26,7 @@ def get_completion(prompt, messages, model='claude-3-opus-20240229'):
     response = completion(model=model, messages=messages)
 
     # Access the generated text from the response object
-    generated_text = response.generate_response()
+    generated_text = response.choices[0].message.content
 
     messages.append({"role": "assistant", "content": generated_text})
 
